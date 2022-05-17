@@ -2,9 +2,9 @@
   hosts: localhost
   connection: local
 
-# influx
-
   tasks:
+
+# influx
   - name: "pull influx image"
     docker_image:
       name: influxdb:1.8
@@ -15,11 +15,16 @@
       name: influxdb1.8
       image: influxdb:1.8
       state: started
+      env:
+        INFLUXDB_DB: "influx"
+        INFLUXDB_ADMIN_USER: "admin"
+        INFLUXDB_ADMIN_PASSWORD: "123"
       ports:
         - "8086:8086"
+      volumes:
+        - influxdb_data:/var/lib/influxdb
 
 # kapacitor
-
   - name: "pull kapacitor image"
     docker_image:
       name: kapacitor
@@ -34,7 +39,6 @@
         - "9092:9092"
 
 # chronograf
-
   - name: "pull chronograf image"
     docker_image:
       name: chronograf
@@ -49,7 +53,6 @@
         - "8888:8888"
 
 # grafana
-
   - name: "pull grafana image"
     docker_image:
       name: grafana/grafana
@@ -64,7 +67,6 @@
         - "3000:3000"
 
 # telegraf
-
   - name: Telegraf repository key
     apt_key:
       url: https://repos.influxdata.com/influxdb.key
