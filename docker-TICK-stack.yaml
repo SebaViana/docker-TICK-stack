@@ -1,0 +1,64 @@
+- name: "docker TICK stack"
+  hosts: localhost
+  connection: local
+
+# influx
+
+  tasks:
+  - name: "pull influx image"
+    docker_image:
+      name: influxdb:1.8
+      source: pull
+
+  - name: "run influx container"
+    docker_container:
+      name: influxdb1.8
+      image: influxdb:1.8
+      state: started
+      ports:
+        - "8086:8086"
+
+# kapacitor
+
+  - name: "pull kapacitor image"
+    docker_image:
+      name: kapacitor
+      source: pull
+
+  - name: "run kapacitor container"
+    docker_container:
+      name: kapacitor
+      image: kapacitor
+      state: started
+      ports:
+        - "9092:9092"
+
+# chronograf
+
+  - name: "pull chronograf image"
+    docker_image:
+      name: chronograf
+      source: pull
+
+  - name: "run chronograf container"
+    docker_container:
+      name: chronograf
+      image: chronograf
+      state: started
+      ports:
+        - "8888:8888"
+
+# grafana
+
+  - name: "pull grafana image"
+    docker_image:
+      name: grafana/grafana
+      source: pull
+
+  - name: "run grafana/grafana container"
+    docker_container:
+      name: grafana
+      image: grafana/grafana
+      state: started
+      ports:
+        - "3000:3000"
