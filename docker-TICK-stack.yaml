@@ -63,8 +63,13 @@
       name: grafana
       image: grafana/grafana
       state: started
+      env:
+        GF_SECURITY_ADMIN_USER: "admin"
+        GF_SECURITY_ADMIN_USER: "123"
       ports:
         - "3000:3000"
+      volumes:
+        - influxdb_data:/var/lib/grafana
 
 # telegraf
   - name: Telegraf repository key
@@ -86,3 +91,21 @@
         - telegraf
       state: present
     register: install_telegraf
+
+  - name: Copy config
+    copy:
+      src: ./telegraf.conf
+      dest: /etc/telegraf/telegraf.conf
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+      force: no
+      notify:
+      - restart telegraf
+
+  handlers:
+  - name: restart telegraf
+    service:
+      name: telegraf
+      state: restarted
