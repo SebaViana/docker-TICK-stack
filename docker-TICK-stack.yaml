@@ -65,7 +65,7 @@
       state: started
       env:
         GF_SECURITY_ADMIN_USER: "admin"
-        GF_SECURITY_ADMIN_USER: "123"
+        GF_SECURITY_ADMIN_PASSWORD: "123"
       ports:
         - "3000:3000"
       volumes:
@@ -101,7 +101,7 @@
       mode: 0644
       backup: yes
       force: no
-      notify:
+    notify:
       - restart telegraf
 
   handlers:
