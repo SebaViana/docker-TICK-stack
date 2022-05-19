@@ -4,7 +4,13 @@
 
   tasks:
 
+  - name: Creates directory
+    file:
+      path: /home/iquall/docker_volume
+      state: directory
+
 # influx
+
   - name: "pull influx image"
     docker_image:
       name: influxdb:1.8
@@ -33,7 +39,7 @@
       ports:
         - "8086:8086"
       volumes:
-        - ./influx:/influx/influx/influx
+        - /home/iquall/docker_volume/influx:/influx/influx/influx
 
 # kapacitor
   - name: "pull kapacitor image"
@@ -49,7 +55,7 @@
       ports:
         - "9092:9092"
       volumes:
-      ./kapacitor:/var/lib/kapacitor
+        - /home/iquall/docker_volume/kapacitor:/var/lib/kapacitor
 
 # chronograf
   - name: "pull chronograf image"
@@ -83,7 +89,7 @@
         - "3000:3000"
       user: "472"
       volumes:
-            - ./grafana:/var/lib/grafana
+        - /home/iquall/docker_volume/grafana:/var/lib/grafana
 
 # telegraf
   - name: Telegraf repository key
