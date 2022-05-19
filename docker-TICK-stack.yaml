@@ -48,6 +48,8 @@
       state: started
       ports:
         - "9092:9092"
+      volumes:
+        - kapacitor:/var/lib/kapacitor
 
 # chronograf
   - name: "pull chronograf image"
@@ -79,8 +81,9 @@
         GF_SECURITY_ADMIN_PASSWORD: "123"
       ports:
         - "3000:3000"
+      user: "472"
       volumes:
-        - influxdb_data:/var/lib/grafana
+        - grafana:/var/lib/grafana
 
 # telegraf
   - name: Telegraf repository key
@@ -120,4 +123,5 @@
     service:
       name: "telegraf"
       state: restarted
-      enabled: yes
+      enabled: yes4
+      
