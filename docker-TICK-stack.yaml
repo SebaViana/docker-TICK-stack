@@ -15,9 +15,9 @@
 #    register: influxvolume_exists
 #    failed_when: false
 
-  - name: Create a volume
-    docker_volume:
-      name: influxdb
+#  - name: Create a volume
+#    docker_volume:
+#      name: influxdb
 #    when: influxvolume_exists is failed
 
 
@@ -33,7 +33,7 @@
       ports:
         - "8086:8086"
       volumes:
-        - influxdb_data:/var/lib/influxdb
+        - /home/iquall/docker_volumes/influx:/var
 
 # kapacitor
   - name: "pull kapacitor image"
@@ -49,7 +49,7 @@
       ports:
         - "9092:9092"
       volumes:
-        - kapacitor:/var/lib/kapacitor
+        - /home/iquall/docker_volumes/kapacitor:/var
 
 # chronograf
   - name: "pull chronograf image"
@@ -83,7 +83,7 @@
         - "3000:3000"
       user: "472"
       volumes:
-        - grafana:/var/lib/grafana
+        - /home/iquall/docker_volumes/grafana:/var
 
 # telegraf
   - name: Telegraf repository key
@@ -123,5 +123,5 @@
     service:
       name: "telegraf"
       state: restarted
-      enabled: yes4
+      enabled: yes
       
