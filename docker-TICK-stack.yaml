@@ -10,14 +10,14 @@
       name: influxdb:1.8
       source: pull
 
-#  - name: check if myvolume exists
-#    command: docker volume inspect influxdb
-#    register: myvolume_exists
-#    failed_when: false
+  - name: check if influxdb volume exists
+    command: docker volume inspect influxdb
+    register: influxvolume_exists
+    failed_when: false
 
   - name: create influxdb volume
     command: docker volume create --name influxdb_data
-#    when: myvolume_exists|failed
+    when: influxvolume_exists is failed
 
 
   - name: "run influx container"
