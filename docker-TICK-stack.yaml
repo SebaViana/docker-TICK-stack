@@ -9,6 +9,19 @@
       path: /home/iquall/docker_volume
       state: directory
 
+  - name: Creates grafana directory
+    file:
+      path: /home/iquall/docker_volume/grafana
+      state: directory
+
+  - name: Recursively change ownership of a directory
+    ansible.builtin.file:
+      path: /home/iquall/docker_volume/grafana
+      state: directory
+      recurse: yes
+      owner: '472'
+      group: docker
+
 # influx
 
   - name: "pull influx image"
@@ -52,6 +65,17 @@
       name: kapacitor
       image: kapacitor
       state: started
+      #env:
+      #  KAPACITOR_HOSTNAME: kapacitor
+      #  KAPACITOR_INFLUXDB_0_URLS_0: "http://influxdb:8086"
+      #  KAPACITOR_INFLUXDB_ENABLED: "true"
+      #  KAPACITOR_INFLUXDB_NAME: "monitoring"
+      #  KAPACITOR_INFLUXDB_USERNAME: "admin"
+      #  KAPACITOR_INFLUXDB_PASSWORD: "123"
+      #  KAPACITOR_INFLUXDB_STARTUP_TIMEOUT: "5m"
+      #  KAPACITOR_INFLUXDB_SUBSCRIPTION_MODE: "server"
+      #  KAPACITOR_INFLUXDB_SUBSCRIPTION_PROTOCOL: "http"
+      #  KAPACITOR_INFLUXDB_KAPACITOR_HOSTNAME: "kapacitor"
       ports:
         - "9092:9092"
       volumes:
@@ -62,7 +86,7 @@
       path: /home/iquall/docker_volume/kapacitor
       state: directory
       recurse: yes
-      owner: 999
+      owner: 666
       group: docker
 
 # chronograf
@@ -98,14 +122,6 @@
       user: "472"
       volumes:
         - /home/iquall/docker_volume/grafana:/var/lib/grafana
-
-  - name: Recursively change ownership of a directory
-    ansible.builtin.file:
-      path: /home/iquall/docker_volume/grafana
-      state: directory
-      recurse: yes
-      owner: 472
-      group: docker
 
 # telegraf
   - name: Telegraf repository key
