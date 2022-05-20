@@ -57,6 +57,14 @@
       volumes:
         - /home/iquall/docker_volume/kapacitor:/var/lib/kapacitor
 
+  - name: Recursively change ownership of a directory # not working
+    ansible.builtin.file:
+      path: /home/iquall/docker_volume/kapacitor
+      state: directory
+      recurse: yes
+      owner: 999
+      group: docker
+
 # chronograf
   - name: "pull chronograf image"
     docker_image:
@@ -90,6 +98,14 @@
       user: "472"
       volumes:
         - /home/iquall/docker_volume/grafana:/var/lib/grafana
+
+  - name: Recursively change ownership of a directory
+    ansible.builtin.file:
+      path: /home/iquall/docker_volume/grafana
+      state: directory
+      recurse: yes
+      owner: 472
+      group: docker
 
 # telegraf
   - name: Telegraf repository key
